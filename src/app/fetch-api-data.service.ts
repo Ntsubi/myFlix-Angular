@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 //Declaring the api url that will provide data for the client app
-const apiUrl = 'https://render-movie-api.onrender.com';
+const apiUrl = 'https://render-movie-api.onrender.com/';
 //This Injectable code tells Angular that this service will be avaiable everywhere, ie 'root'
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class UserRegistrationService {
   //making the api call for the login endpoint
   public userLogin(userDetails: any): Observable<any> {
     console.log(userDetails);
-    return this.http.post(apiUrl + 'users', userDetails).pipe(
+    return this.http.post(apiUrl + 'login', userDetails).pipe(
       catchError(this.handleError)
     );
   }
@@ -173,7 +173,8 @@ export class UserRegistrationService {
     );
   }
 
-  private extractResponseData(res: Response): any {
+  //ensures that when an API call is made, you'll either get a response if it exists or gracefully receive an empty object
+  private extractResponseData(res: any): any {
     const body = res;
     return body || {};
   }
@@ -187,6 +188,6 @@ export class UserRegistrationService {
         `Error body is: ${error.error}`);
     }
     return throwError(
-      'Something bad happened; please try again later.');
+      'Something bad happened - please try again later.');
   }
 }
